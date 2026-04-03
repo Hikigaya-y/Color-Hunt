@@ -2,34 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KFPC Spin Event</title>
-
+  
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* --------------------------
-       GLOBAL & BACKGROUND
-       -------------------------- */
     body {
       margin: 0;
       height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       background-color: #09090b;
       background-image: url('bg.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       color: white;
       font-family: 'Poppins', sans-serif;
       overflow: hidden;
     }
 
-    /* --------------------------
-       UI ELEMENTS
-       -------------------------- */
     .shield-panel {
       position: relative;
       width: 95vw;
@@ -38,8 +32,7 @@
       padding: 4vh 2vw;
       box-sizing: border-box;
       background: rgba(15, 15, 20, 0.45);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(25px);
       border-radius: 36px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.2);
       display: flex;
@@ -50,52 +43,31 @@
       border: 1px solid rgba(100, 200, 255, 0.2);
     }
 
-    .header {
-      text-align: center;
-    }
-
     .header img {
-      width: clamp(100px, 12vmin, 180px);
-      margin-bottom: 1vmin;
+      width: clamp(100px, 15vmin, 180px);
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
     }
 
     .subtitle {
       font-size: clamp(11px, 1.5vmin, 16px);
       color: #c4c8d0;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
       text-transform: uppercase;
       font-weight: 500;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
     h1 {
       font-size: clamp(24px, 5vmin, 46px);
-      font-weight: 700;
-      margin: 2vmin 0;
-      text-align: center;
-      letter-spacing: -0.5px;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+      font-weight: 800;
+      margin: 0;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    .main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      flex-grow: 1;
-      justify-content: center;
-    }
-
-    /* --------------------------
-       WHEEL & POINTER
-       -------------------------- */
     .wheel-container {
       position: relative;
       width: 75vmin;
-      max-width: 800px;
+      max-width: 580px;
       aspect-ratio: 1 / 1;
-      margin-bottom: 4vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -105,224 +77,114 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: clamp(6px, 1.5vmin, 12px) solid #fff;
+      border: clamp(8px, 1.5vmin, 15px) solid #fff;
       box-sizing: border-box;
-      will-change: transform, box-shadow, border-color; 
-      cursor: pointer; 
-      transition: box-shadow 0.1s ease-out, border-color 0.1s ease-out, transform 0.2s ease-out;
-    }
-
-    canvas:hover {
-      transform: scale(1.02);
-    }
-
-    canvas.disabled-wheel {
-      cursor: not-allowed;
-    }
-    
-    canvas.disabled-wheel:hover {
-      transform: scale(1); /* prevent scale on hover if disabled */
+      transition: transform 0.1s linear; /* Faster transition response */
     }
 
     .idle-mode {
-      animation: rgbBoundary 6s linear infinite, slowSpin 40s linear infinite;
+      animation: rgbBoundary 3s linear infinite, slowSpin 50s linear infinite;
     }
 
-    @keyframes slowSpin {
-      from { transform: rotate(0deg) scale(1); }
-      to { transform: rotate(360deg) scale(1); }
-    }
-
+    @keyframes slowSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes rgbBoundary {
-      0%   { border-color: #FF2A2A; box-shadow: 0 0 40px #FF2A2A88, inset 0 0 15px #FF2A2A55; }
-      16%  { border-color: #FFEA00; box-shadow: 0 0 40px #FFEA0088, inset 0 0 15px #FFEA0055; }
-      33%  { border-color: #00E676; box-shadow: 0 0 40px #00E67688, inset 0 0 15px #00E67655; }
-      50%  { border-color: #2A84FF; box-shadow: 0 0 40px #2A84FF88, inset 0 0 15px #2A84FF55; }
-      66%  { border-color: #FF69B4; box-shadow: 0 0 40px #FF69B488, inset 0 0 15px #FF69B455; }
-      83%  { border-color: #FF6600; box-shadow: 0 0 40px #FF660088, inset 0 0 15px #FF660055; }
-      100% { border-color: #FF2A2A; box-shadow: 0 0 40px #FF2A2A88, inset 0 0 15px #FF2A2A55; }
+      0%, 100% { border-color: #FF2A2A; box-shadow: 0 0 60px #FF2A2A88; }
+      33% { border-color: #00E676; box-shadow: 0 0 60px #00E67688; }
+      66% { border-color: #2A84FF; box-shadow: 0 0 60px #2A84FF88; }
     }
 
     .pointer-wrapper {
       position: absolute;
-      top: -4%;
+      top: -5%;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10;
-      filter: drop-shadow(0 6px 6px rgba(0,0,0,0.8));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      pointer-events: none; 
-    }
-
-    .pointer-base {
-      width: clamp(38px, 6vmin, 60px);
-      height: clamp(12px, 2vmin, 20px);
-      background: linear-gradient(to right, #444, #ddd, #fff, #aaa, #333);
-      border-radius: 8px;
-      margin-bottom: -5%;
-      z-index: 11;
-      border: 1px solid #222;
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);
+      z-index: 20;
     }
 
     .pointer {
-      width: clamp(22px, 4vmin, 40px);
-      height: clamp(32px, 6vmin, 55px);
-      background: linear-gradient(135deg, #ffffff 0%, #b8d8ff 40%, #555 100%);
+      width: clamp(25px, 5vmin, 45px);
+      height: clamp(35px, 7vmin, 60px);
+      background: linear-gradient(180deg, #fff, #bbb);
       clip-path: polygon(50% 100%, 0 0, 100% 0);
-      z-index: 10;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
     }
 
-    @keyframes bounce {
-      0%   { transform: translateX(-50%) translateY(0); }
-      50%  { transform: translateX(-50%) translateY(-10px); }
-      100% { transform: translateX(-50%) translateY(0); }
-    }
-
-    /* --------------------------
-       BUTTONS & TEXT
-       -------------------------- */
     .spin-button {
       width: 85%;
-      max-width: 500px;
-      padding: clamp(16px, 3vmin, 24px) 20px;
-      font-size: clamp(20px, 4vmin, 30px);
+      max-width: 450px;
+      padding: clamp(15px, 3vmin, 22px) 20px;
+      font-size: clamp(18px, 4vmin, 28px);
       border-radius: 50px;
       border: none;
       background: linear-gradient(135deg, #ffe58f, #f59e0b);
       color: #111;
       cursor: pointer;
       font-weight: 800;
-      letter-spacing: 1px;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4), inset 0 2px 2px rgba(255,255,255,0.5);
-      font-family: 'Poppins', sans-serif;
-    }
-    
-    .spin-button:active:not(:disabled) {
-      transform: scale(0.96) translateY(2px);
-      box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2), inset 0 2px 2px rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+      transition: 0.2s;
     }
 
     .spin-button:disabled {
       background: rgba(255, 255, 255, 0.1);
-      color: #777;
+      color: #555;
       cursor: not-allowed;
       box-shadow: none;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(25px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      background: #0a0a0c;
+      padding: 50px;
+      border-radius: 40px;
+      text-align: center;
       border: 1px solid rgba(255,255,255,0.1);
     }
 
-    #countdown {
-      margin-top: 15px;
-      font-size: clamp(14px, 2vmin, 18px);
-      color: #c4c8d0;
-      text-align: center;
-      min-height: 25px;
-    }
-
-    /* --------------------------
-       WINNER MODAL POPUP
-       -------------------------- */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      background: rgba(15, 15, 20, 0.8);
-      border: 1px solid rgba(100, 200, 255, 0.3);
-      padding: clamp(30px, 5vmin, 60px) clamp(20px, 4vmin, 40px);
-      border-radius: 30px;
-      text-align: center;
-      transform: scale(0.8) translateY(20px);
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.9), 0 0 60px rgba(100, 200, 255, 0.2);
-      width: clamp(280px, 40vw, 450px);
-    }
-
-    .modal-overlay.active .modal-content {
-      transform: scale(1) translateY(0);
-    }
-
-    .modal-title {
-      font-size: clamp(16px, 2.5vmin, 22px);
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    .modal-winner {
-      font-size: clamp(40px, 8vmin, 60px);
-      font-weight: 800;
-      margin: 0 0 20px 0;
-      text-shadow: 0 0 20px rgba(255,255,255,0.4);
-    }
-
-    .modal-loading {
-      display: inline-block;
-      width: clamp(24px, 4vmin, 36px);
-      height: clamp(24px, 4vmin, 36px);
-      border: 4px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spinLoader 1s ease-in-out infinite;
-      margin-top: 15px;
-    }
-
-    @keyframes spinLoader {
-      to { transform: rotate(360deg); }
+    .redirect-line {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #00E676;
+      font-weight: bold;
     }
   </style>
 </head>
-
 <body>
 
 <div class="shield-panel">
   <div class="header">
-    <img src="logo.png" alt="Logo">
-    <div class="subtitle">KFPC PRESENTS</div>
+    <img src="logo.png" alt="LOGO" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+    <div id="logoFallback" style="display:none; font-weight:800; font-size:28px;">KFPC</div>
+    <div class="subtitle">Presents</div>
   </div>
 
   <h1>🌈 Spin Your Color</h1>
 
-  <div class="main">
-    <div class="wheel-container">
-      <div class="pointer-wrapper">
-        <div class="pointer-base"></div>
-        <div class="pointer"></div>
-      </div>
-      <canvas id="wheel" class="idle-mode" onclick="spin()"></canvas>
-    </div>
+  <div class="wheel-container">
+    <div class="pointer-wrapper"><div class="pointer"></div></div>
+    <canvas id="wheel" class="idle-mode"></canvas>
+  </div>
 
-    <button id="spinBtn" class="spin-button" onclick="spin()">SPIN TO WIN</button>
-    <div id="countdown"></div>
+  <div id="buttonArea" style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <button id="spinBtn" class="spin-button" onclick="startSpin()">SPIN TO WIN</button>
   </div>
 </div>
 
 <div id="winnerModal" class="modal-overlay">
   <div class="modal-content">
-    <div class="modal-title">You Landed On</div>
-    <div id="modalWinnerColor" class="modal-winner">Red!</div>
-    <div id="modalCountdownText" style="color: #ccc; font-size: clamp(14px, 2.5vmin, 18px);">Redirecting to Form...</div>
-    <div class="modal-loading"></div>
+    <div style="color:#aaa; text-transform:uppercase; letter-spacing:4px; font-size:14px;">Boom! You got</div>
+    <h2 id="modalWinnerColor" style="font-size:80px; margin:10px 0; font-weight:800;">COLOR</h2>
+    <div id="redirectText" class="redirect-line">Redirecting in 2s...</div>
   </div>
 </div>
 
@@ -332,266 +194,135 @@
 <script>
 const colors = ["Red","Blue","Green","Yellow","Pink","Orange"];
 const colorValues = ["#FF2A2A", "#2A84FF", "#00E676", "#FFEA00", "#FF69B4", "#FF6600"];
+const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfw66vDJKTwGG3rxuQhHX0vyB2I5wVvqtgkYGx6on8PWfa0Kw/viewform?usp=pp_url&entry.2109138769=";
 
-let canvas = document.getElementById("wheel");
-let ctx = canvas.getContext("2d");
-let spinBtn = document.getElementById("spinBtn");
-let winnerModal = document.getElementById("winnerModal");
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+const spinBtn = document.getElementById('spinBtn');
+const buttonArea = document.getElementById('buttonArea');
+const tickSound = document.getElementById('tickSound');
+const winSound = document.getElementById('winSound');
 
-let angle = 0;
-let spinning = false;
+let currentRotation = 0;
+let isSpinning = false;
 
-// ------------------------------------------
-// CHECK LOCAL STORAGE FOR PREVIOUS SPIN
-// ------------------------------------------
-if (localStorage.getItem("kfpc_has_spun") === "true") {
-  spinBtn.innerText = "ALREADY SPUN";
-  spinBtn.disabled = true;
-  canvas.classList.add("disabled-wheel");
-  document.getElementById("countdown").innerText = "You have already claimed your spin.";
-}
+canvas.width = 1200; canvas.height = 1200;
+ctx.scale(4, 4); 
 
-// ------------------------------------------
-// HIGH-DPI CANVAS SCALING
-// ------------------------------------------
-const logicalSize = 300; 
-const renderSize = logicalSize * 4; 
-
-canvas.width = renderSize;
-canvas.height = renderSize;
-ctx.scale(renderSize / logicalSize, renderSize / logicalSize);
-
-// ------------------------------------------
-// DRAW CLEAN WHEEL
-// ------------------------------------------
-function drawWheel(){
-  let cx = logicalSize / 2; 
-  let cy = logicalSize / 2;
-  let innerRadius = 149; 
-  let arc = 2 * Math.PI / colors.length;
-
-  ctx.clearRect(0, 0, logicalSize, logicalSize);
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(-Math.PI / 2); 
-  ctx.translate(-cx, -cy);
-
-  for(let i=0;i<colors.length;i++){
+function drawWheel() {
+  const cx = 150, cy = 150, r = 142;
+  const arc = (Math.PI * 2) / colors.length;
+  colors.forEach((color, i) => {
     ctx.beginPath();
     ctx.fillStyle = colorValues[i];
     ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, innerRadius, arc*i, arc*(i+1));
+    ctx.arc(cx, cy, r, i * arc, (i + 1) * arc);
     ctx.fill();
-  }
-
-  for(let i=0;i<colors.length;i++){
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, innerRadius, arc*i, arc*i);
-    ctx.strokeStyle = "#1a1a1a";
-    ctx.lineWidth = 4; 
+    ctx.strokeStyle = "rgba(0,0,0,0.1)";
     ctx.stroke();
-  }
 
-  ctx.beginPath();
-  ctx.arc(cx, cy, innerRadius, 0, 2 * Math.PI);
-  let shadowGrd = ctx.createRadialGradient(cx, cy, innerRadius * 0.4, cx, cy, innerRadius);
-  shadowGrd.addColorStop(0, "rgba(0,0,0,0)");
-  shadowGrd.addColorStop(1, "rgba(0,0,0,0.5)"); 
-  ctx.fillStyle = shadowGrd;
-  ctx.fill();
-
-  for(let i=0;i<colors.length;i++){
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.rotate(arc*i + arc/2);
-    ctx.fillStyle = colors[i] === "Yellow" ? "#111" : "#fff";
-    ctx.font = "bold 18px Poppins";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle"; 
-    ctx.fillText(colors[i], innerRadius - 65, 0);
+    ctx.rotate(i * arc + arc / 2);
+    ctx.fillStyle = color === "Yellow" ? "#111" : "#fff";
+    ctx.font = "bold 16px Poppins";
+    ctx.textAlign = "right";
+    ctx.fillText(color, r - 25, 6);
     ctx.restore();
-  }
-  ctx.restore();
-
-  ctx.beginPath(); ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
-  let capOuterGrd = ctx.createRadialGradient(cx, cy, 5, cx, cy, 30);
-  capOuterGrd.addColorStop(0, "#222"); capOuterGrd.addColorStop(1, "#000");
-  ctx.fillStyle = capOuterGrd; ctx.fill(); 
-  ctx.strokeStyle = "rgba(100, 200, 255, 0.4)"; ctx.lineWidth = 3; ctx.stroke();
-
-  ctx.beginPath(); ctx.arc(cx, cy, 22, 0, 2 * Math.PI);
-  let capInnerGrd = ctx.createLinearGradient(cx-20, cy-20, cx+20, cy+20);
-  capInnerGrd.addColorStop(0, "rgba(255,255,255,0.9)"); 
-  capInnerGrd.addColorStop(0.5, "rgba(100,200,255,0.6)");
-  capInnerGrd.addColorStop(1, "rgba(200,100,255,0.8)");
-  ctx.fillStyle = capInnerGrd; ctx.fill();
-
-  ctx.beginPath(); ctx.arc(cx, cy, 8, 0, 2 * Math.PI); ctx.fillStyle = "#fff"; ctx.fill();
+  });
 }
 
-drawWheel();
+function checkPersistence() {
+  const hasSpun = localStorage.getItem("kfpc_has_spun") === "true";
+  const savedColor = localStorage.getItem("kfpc_result");
+  const savedHex = localStorage.getItem("kfpc_result_hex");
 
-// ------------------------------------------
-// SPIN LOGIC 
-// ------------------------------------------
-function spin(){
-  // Prevent spinning if already spinning OR if they already spun before
-  if(spinning || localStorage.getItem("kfpc_has_spun") === "true") return;
-  spinning = true;
-
-  canvas.classList.remove("idle-mode");
-  canvas.style.animation = "none"; 
-  
-  canvas.style.cursor = "default";
-  spinBtn.innerText = "SPINNING... 🎡";
-  spinBtn.disabled = true;
-
-  let tickSound = document.getElementById("tickSound");
-  let winSound = document.getElementById("winSound");
-
-  winSound.play().catch(()=>{});
-  winSound.pause();
-  winSound.currentTime = 0;
-
-  let spinAngle = Math.random()*2000 + 3500; 
-  let duration = 4500; 
-  let start = null;
-  let lastAngle = angle; 
-  let pegSpacing = 20; 
-
-  function animate(time){
-    if(!start) start = time;
-    let progress = time - start;
-    let t = progress / duration;
-    let ease = 1 - Math.pow(1 - t, 4); 
-
-    angle = spinAngle * ease;
-    canvas.style.transform = `rotate(${angle}deg)`;
-
-    let currentDeg = angle % 360;
-    let segment = 360 / colors.length;
-    let currentIndex = Math.floor(((360 - currentDeg) % 360) / segment) % colors.length;
-    let currentColorHex = colorValues[currentIndex];
+  if (hasSpun && savedColor) {
+    spinBtn.innerText = "ALREADY SPUN";
+    spinBtn.disabled = true;
+    canvas.classList.remove("idle-mode");
+    canvas.style.opacity = "0.2";
     
-    canvas.style.borderColor = currentColorHex;
-    canvas.style.boxShadow = `0 0 70px ${currentColorHex}aa, 0 0 25px ${currentColorHex}, inset 0 0 20px ${currentColorHex}55`;
-
-    if (Math.floor(angle / pegSpacing) > Math.floor(lastAngle / pegSpacing)) {
-      let click = tickSound.cloneNode(true);
-      click.volume = 0.5;
-      click.play().catch(e => {});
-      if (navigator.vibrate) navigator.vibrate(10);
-      bouncePointer();
-    }
-
-    lastAngle = angle;
-
-    if(progress < duration){
-      requestAnimationFrame(animate);
-    } else {
-      finishSpin();
-    }
+    buttonArea.innerHTML += `
+      <div style="margin-top:20px; width:85%; max-width:450px; text-align:center;">
+        <button onclick="window.location.href='${formBaseUrl + encodeURIComponent(savedColor)}'" 
+                class="spin-button" 
+                style="background:${savedHex}; color:${savedColor==='Yellow'?'#111':'#fff'}; box-shadow: 0 15px 35px ${savedHex}77; width:100%;">
+          VIEW YOUR ${savedColor.toUpperCase()} FORM
+        </button>
+      </div>`;
   }
+}
 
+function startSpin() {
+  if (isSpinning || localStorage.getItem("kfpc_has_spun")) return;
+  isSpinning = true;
+  canvas.classList.remove("idle-mode");
+  spinBtn.disabled = true;
+  spinBtn.innerText = "FAST SPINNING...";
+  
+  tickSound.play().then(() => tickSound.pause());
+
+  // SPEED INCREASE: 3 seconds instead of 5
+  const duration = 3000; 
+  const start = performance.now();
+  const rotationTotal = 2800 + (Math.random() * 360); 
+  let lastTickPos = 0;
+
+  function animate(time) {
+    const elapsed = time - start;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // FAST CURVE: Cubic ease out
+    const ease = 1 - Math.pow(1 - progress, 3);
+    
+    currentRotation = rotationTotal * ease;
+    canvas.style.transform = `rotate(${currentRotation}deg)`;
+    
+    let currentTickPos = Math.floor(currentRotation / (360 / colors.length));
+    if (currentTickPos !== lastTickPos) {
+      tickSound.currentTime = 0;
+      tickSound.play().catch(()=>{});
+      lastTickPos = currentTickPos;
+    }
+
+    if (progress < 1) requestAnimationFrame(animate);
+    else finalize();
+  }
   requestAnimationFrame(animate);
 }
 
-// ------------------------------------------
-// POST-SPIN WINNER LOGIC
-// ------------------------------------------
-function finishSpin(){
-  // RECORD THAT THE STUDENT HAS SPUN
+function finalize() {
+  const finalAngle = (360 - (currentRotation % 360) + 270) % 360;
+  const index = Math.floor(finalAngle / (360 / colors.length)) % colors.length;
+  const winColor = colors[index], winHex = colorValues[index];
+
   localStorage.setItem("kfpc_has_spun", "true");
+  localStorage.setItem("kfpc_result", winColor);
+  localStorage.setItem("kfpc_result_hex", winHex);
 
-  let degrees = angle % 360;
-  let segment = 360 / colors.length;
-  let index = Math.floor(((360 - degrees) % 360) / segment) % colors.length;
-  
-  let selectedColor = colors[index];
-  let selectedColorHex = colorValues[index];
+  document.getElementById("modalWinnerColor").innerText = winColor.toUpperCase();
+  document.getElementById("modalWinnerColor").style.color = winHex;
+  document.getElementById("winnerModal").classList.add("active");
 
-  spinBtn.innerText = "WINNER! 🎉";
-  canvas.classList.add("disabled-wheel");
+  // Immediate confetti
+  confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: [winHex, '#fff'] });
+  winSound.play().catch(() => {});
 
-  let winSound = document.getElementById("winSound");
-  winSound.currentTime = 0;
-  winSound.play().catch(e => {});
-
-  let winnerText = document.getElementById("modalWinnerColor");
-  winnerText.innerText = selectedColor + "!";
-  winnerText.style.color = selectedColor === "Yellow" ? "#F6D03F" : selectedColorHex; 
-  
-  winnerModal.classList.add("active");
-
-  launchColorConfetti(selectedColorHex);
-
-  let countdownText = document.getElementById("modalCountdownText");
-  let timeLeft = 3; 
-  
-  countdownText.innerText = `Redirecting in ${timeLeft}...`;
-
-  let countdownTimer = setInterval(() => {
+  // REDIRECT INCREASE: 2 seconds instead of 5
+  let timeLeft = 2; 
+  const timer = setInterval(() => {
     timeLeft--;
-    if (timeLeft > 0) {
-      countdownText.innerText = `Redirecting in ${timeLeft}...`;
-    } else {
-      clearInterval(countdownTimer);
-      countdownText.innerText = "Redirecting now...";
-      
-      let formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfw66vDJKTwGG3rxuQhHX0vyB2I5wVvqtgkYGx6on8PWfa0Kw/viewform?usp=pp_url&entry.2109138769=";
-      window.location.href = formBaseUrl + encodeURIComponent(selectedColor);
+    document.getElementById("redirectText").innerText = `Redirecting in ${timeLeft}s...`;
+    if(timeLeft <= 0) {
+      clearInterval(timer);
+      window.location.href = formBaseUrl + encodeURIComponent(winColor);
     }
-  }, 1000); 
+  }, 1000);
 }
 
-function bouncePointer(){
-  let pointerWrapper = document.querySelector(".pointer-wrapper");
-  pointerWrapper.style.animation = "none";
-  void pointerWrapper.offsetWidth; 
-  pointerWrapper.style.animation = "bounce 0.15s ease";
-}
-
-// ------------------------------------------
-// LIGHT, FLOATING CONFETTI
-// ------------------------------------------
-function launchColorConfetti(hexColor){
-  var duration = 3000;
-  var end = Date.now() + duration;
-  
-  var festiveColors = [hexColor, '#ffffff', '#fffbe6', '#FFD700'];
-
-  (function frame() {
-    confetti({
-      particleCount: 2, 
-      angle: 60,
-      spread: 70,
-      origin: { x: 0, y: 0.6 }, 
-      colors: festiveColors,
-      shapes: ['circle', 'square'],
-      gravity: 0.4,  
-      scalar: 0.7,   
-      ticks: 400     
-    });
-    confetti({
-      particleCount: 2, 
-      angle: 120,
-      spread: 70,
-      origin: { x: 1, y: 0.6 },
-      colors: festiveColors,
-      shapes: ['circle', 'square'],
-      gravity: 0.4,  
-      scalar: 0.7,   
-      ticks: 400     
-    });
-
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
-  }());
-}
+drawWheel();
+checkPersistence();
 </script>
-
 </body>
 </html>
-
